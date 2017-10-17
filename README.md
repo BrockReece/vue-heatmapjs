@@ -1,22 +1,70 @@
+![example](src/assets/example.png)
+
 # vue-heatmapjs
 
 > A vue directive for collecting and displaying user activity on a component
 
-![example](src/assets/example.png)
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+## Install
+You can use NPM or Yarn to add this plugin to your project
+```bash
+npm install vue-heatmapjs
+# or
+yarn add vue-heatmapjs
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Usage
+You need to install this plugin in you main.js
+
+```js
+// main.js
+
+import Vue from 'vue'
+import heatmap from 'vue-heatmapjs'
+
+Vue.use(heatmap)
+
+```
+And then you can add the `v-heatmap` directive to the dom elements you want to track.
+
+```html
+<!-- App.vue -->
+<div v-heatmap>
+  ...
+</div>
+```
+
+### Toggle heatmap
+You can toggle the heatmap on and off by passing an expression into the directive, the example below will produce something similar to the image at the top of these docs
+
+```html
+<template>
+  ...
+  <div v-heatmap="show"></div>
+  <button @click="show = !show">Toggle Heatmap</button>
+  ...
+</template>
+
+<script>
+  ...
+    data() {
+      return {
+        show: false,
+      }
+    },
+  ...
+</script>
+```
+
+### Listen for events
+You can pass an afterAdd method through with the plugin options, this will allow you to access and process the events captured for the heatmap
+
+```js
+// main.js
+
+Vue.use(heatmap, {
+  afterAdd(data) {
+    console.log(data)
+    // you can fire this back to your analytics server
+  },
+})
+```
