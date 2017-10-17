@@ -2,7 +2,7 @@
 
 > A vue directive for collecting and displaying user activity on a component
 
-[example](src/assets/example.png)
+![example](src/assets/example.png)
 ## Build Setup
 
 ``` bash
