@@ -4,7 +4,6 @@
       <img  src="./assets/logo.png">
     </div>
     <button @click="showHeatmap = !showHeatmap">Toggle Heatmap</button>
-    <HelloWorld/>
   </div>
 </template>
 
