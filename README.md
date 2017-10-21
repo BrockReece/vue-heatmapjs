@@ -1,6 +1,8 @@
 ![example](src/assets/example.png)
 
 # vue-heatmapjs
+[![npm version](https://badge.fury.io/js/vue-heatmapjs.svg)](https://badge.fury.io/js/vue-heatmapjs)
+
 
 > A vue directive for collecting and displaying user activity on a component
 
