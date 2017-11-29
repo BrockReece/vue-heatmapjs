@@ -28,7 +28,7 @@ export default {
     };
 
     Vue.directive('heatmap', {
-      inserted(el) {
+      inserted(el, binding) {
         heatmap = h337.create({
           maxOpacity: 0.6,
           radius: 50,
@@ -40,11 +40,14 @@ export default {
         el.addEventListener('mousemove', mouseMove);
         el.addEventListener('click', mouseClick);
         el.addEventListener('touchmove', mouseMove);
+
+        /* eslint-disable no-param-reassign */
+        el.querySelector('canvas.heatmap-canvas').style.pointerEvents = 'none';
       },
 
       update(el, binding) {
         /* eslint-disable no-param-reassign */
-        el.querySelector('canvas').style.display = binding.value ? 'inherit' : 'none';
+        el.querySelector('canvas.heatmap-canvas').style.display = binding.value ? 'inherit' : 'none';
       },
     });
   },
