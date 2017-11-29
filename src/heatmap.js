@@ -42,6 +42,7 @@ export default {
         el.addEventListener('touchmove', mouseMove);
 
         /* eslint-disable no-param-reassign */
+        el.querySelector('canvas.heatmap-canvas').style.display = binding.value ? 'inherit' : 'none';
         el.querySelector('canvas.heatmap-canvas').style.pointerEvents = 'none';
       },
 
