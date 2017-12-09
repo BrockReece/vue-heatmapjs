@@ -1,30 +1,13 @@
 import h337 from 'heatmap.js';
+import { Observable } from 'rxjs';
 
 export default {
   install(Vue, options = {}) {
     let heatmap;
 
-    const addData = (data) => {
-      heatmap.addData(data);
-      if (options.afterAdd) {
-        options.afterAdd(data);
-      }
-    };
-
-    const mouseMove = (e) => {
-      addData({
-        x: e.layerX,
-        y: e.layerY,
-        value: 5,
-      });
-    };
-
-    const mouseClick = (e) => {
-      addData({
-        x: e.layerX,
-        y: e.layerY,
-        value: 10,
-      });
+    const addValue = (e, value) => {
+      e.value = value;
+      return e;
     };
 
     Vue.directive('heatmap', {
@@ -37,9 +20,31 @@ export default {
           container: el,
         });
 
-        el.addEventListener('mousemove', mouseMove);
-        el.addEventListener('click', mouseClick);
-        el.addEventListener('touchmove', mouseMove);
+        const move = Observable.fromEvent(el, 'mousemove');
+        const touch = Observable.fromEvent(el, 'touchmove');
+        const click = Observable.fromEvent(el, 'click');
+
+        const streams = Observable.merge(
+          move.map(e => addValue(e, 5)),
+          touch.map(e => addValue(e, 5)),
+          click.map(e => addValue(e, 10)),
+        );
+
+        streams.debounceTime(10)
+          .map(e => ({
+            x: e.layerX,
+            y: e.layerY,
+            value: e.value,
+          }))
+          .subscribe(e => heatmap.addData(e));
+
+        if (options.afterAdd) {
+          streams.subscribe(options.afterAdd);
+        }
+
+        if (options.stream) {
+          streams.subscribe(e => options.stream.next(e));
+        }
 
         /* eslint-disable no-param-reassign */
         el.querySelector('canvas.heatmap-canvas').style.display = binding.value ? 'inherit' : 'none';
