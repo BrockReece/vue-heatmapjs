@@ -7,10 +7,12 @@ import Vueheatmap from './heatmap';
 import App from './App';
 
 const stream = new Subject();
+export const pauser = new Subject();
 
 Vue.config.productionTip = false;
 Vue.use(Vueheatmap, {
   stream,
+  pauser,
 });
 
 stream
@@ -18,7 +20,7 @@ stream
   .subscribe(console.log);
 
 /* eslint-disable no-new */
-new Vue({
+export default new Vue({
   el: '#app',
   template: '<App/>',
   components: { App },
