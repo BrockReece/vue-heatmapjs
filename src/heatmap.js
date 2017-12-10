@@ -20,6 +20,10 @@ export default {
           container: el,
         });
 
+        if (options.heatmapPreload) {
+          heatmap.addData(options.heatmapPreload);
+        }
+
         const move = Observable.fromEvent(el, 'mousemove');
         const touch = Observable.fromEvent(el, 'touchmove');
         const click = Observable.fromEvent(el, 'click');
