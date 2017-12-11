@@ -59,6 +59,25 @@ You can toggle the heatmap on and off by passing an expression into the directiv
 ```
 
 ### Listen for events
+**Streams**
+
+You can pass in an Observable into the plugin options and subscribe to events captured for the heatmap.
+
+```js
+// main.js
+import { Subject } from 'rxjs';
+
+const stream = new Subject();
+Vue.use(Vueheatmap, {
+  stream,
+});
+
+stream.subscribe(console.log);
+```
+
+
+**Callback**
+
 You can pass an afterAdd method through with the plugin options, this will allow you to access and process the events captured for the heatmap
 
 ```js
@@ -70,4 +89,16 @@ Vue.use(heatmap, {
     // you can fire this back to your analytics server
   },
 })
+```
+
+### Preload heatmap
+Once you have captured heatmap data and persisted the data somewhere you will probably need a way of loading this data back in to your heatmap.
+
+You can pass in an array of heatmap events using the heatmap preload plugin option
+
+```js
+//main.js
+Vue.use(Vueheatmap, {
+  heatmapPreload: [{ x: 10, y: 10, value: 100 }],
+});
 ```

@@ -11,6 +11,7 @@ const stream = new Subject();
 Vue.config.productionTip = false;
 Vue.use(Vueheatmap, {
   stream,
+  heatmapPreload: [{ x: 10, y: 10, value: 100 }],
 });
 
 stream
