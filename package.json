@@ -1,7 +1,7 @@
 {
   "name": "vue-heatmapjs",
   "main": "src/heatmap.js",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A vue directive for collecting and displaying user activity on a component",
   "author": "Brock <brock.reece@croud.co.uk>",
   "scripts": {
