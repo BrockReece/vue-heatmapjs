@@ -90,3 +90,15 @@ Vue.use(heatmap, {
   },
 })
 ```
+
+### Preload heatmap
+Once you have captured heatmap data and persisted the data somewhere you will probably need a way of loading this data back in to your heatmap.
+
+You can pass in an array of heatmap events using the heatmap preload plugin option
+
+```js
+//main.js
+Vue.use(Vueheatmap, {
+  heatmapPreload: [{ x: 10, y: 10, value: 100 }],
+});
+```
