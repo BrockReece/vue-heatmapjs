@@ -59,6 +59,25 @@ You can toggle the heatmap on and off by passing an expression into the directiv
 ```
 
 ### Listen for events
+**Streams**
+
+You can pass in an Observable into the plugin options and subscribe to events captured for the heatmap.
+
+```js
+// main.js
+import { Subject } from 'rxjs';
+
+const stream = new Subject();
+Vue.use(Vueheatmap, {
+  stream,
+});
+
+stream.subscribe(console.log);
+```
+
+
+**Callback**
+
 You can pass an afterAdd method through with the plugin options, this will allow you to access and process the events captured for the heatmap
 
 ```js
