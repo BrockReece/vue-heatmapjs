@@ -12,11 +12,8 @@ export const pauser = new Subject();
 Vue.config.productionTip = false;
 Vue.use(Vueheatmap, {
   stream,
-<<<<<<< HEAD
   pauser,
-=======
   heatmapPreload: [{ x: 10, y: 10, value: 100 }],
->>>>>>> ef91976680800ca2efebcdbbe6ad416ae073c4fa
 });
 
 stream
