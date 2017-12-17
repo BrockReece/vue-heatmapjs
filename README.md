@@ -102,3 +102,10 @@ Vue.use(Vueheatmap, {
   heatmapPreload: [{ x: 10, y: 10, value: 100 }],
 });
 ```
+
+The plugin can also handle a Promise
+```js
+//main.js
+Vue.use(Vueheatmap, {
+  heatmapPreload: fetch('http://api.example.com').then(response => response.json()),
+});
