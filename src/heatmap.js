@@ -84,7 +84,7 @@ export default {
     });
 
     Vue.directive('heatmap', {
-      inserted(el, binding) {
+      inserted: async (el, binding) => {
         heatmap = h337.create({
           maxOpacity: 0.6,
           radius: 50,
@@ -94,7 +94,7 @@ export default {
         });
 
         if (options.heatmapPreload) {
-          heatmap.addData(options.heatmapPreload);
+          heatmap.addData(await Promise.resolve(options.heatmapPreload));
         }
 
         const move = Observable.fromEvent(el, 'mousemove');
