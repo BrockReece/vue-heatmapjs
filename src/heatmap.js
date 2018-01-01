@@ -1,6 +1,7 @@
 import h337 from 'heatmap.js';
 import { Observable } from 'rxjs';
 
+let webgazerStream = null;
 let loaded = false;
 window.addEventListener('load', () => { loaded = true; });
 
@@ -26,6 +27,31 @@ export default {
         heatmap.addData(await Promise.resolve(options.heatmapPreload));
       }
 
+      if (options.webgazer) {
+        const webgazerOptions = typeof options.webgazer === 'object' ? options.webgazer : {};
+
+        /* eslint-disable no-undef */
+        webgazerStream = Observable.interval(500)
+          .map(webgazer.getCurrentPrediction)
+          .filter(e => e)
+          .map(e => ({
+            layerX: e.x,
+            layerY: e.y,
+            value: 50,
+          }));
+
+        webgazer.setRegression(webgazerOptions.regression || 'ridge')
+          .setTracker(webgazerOptions.tracker || 'clmtrackr')
+          .begin()
+          .showPredictionPoints(binding.value);
+
+        window.addEventListener('unload', () => {
+          console.log('end');
+          webgazer.end();
+        });
+        /* eslint-enable */
+      }
+
       const move = Observable.fromEvent(el, 'mousemove');
       const touch = Observable.fromEvent(el, 'touchmove');
       const click = Observable.fromEvent(el, 'click');
@@ -34,6 +60,7 @@ export default {
         move.map(e => addValue(e, 5)),
         touch.map(e => addValue(e, 5)),
         click.map(e => addValue(e, 10)),
+        webgazerStream || Observable.never,
       );
 
       streams.debounceTime(10)
@@ -71,6 +98,11 @@ export default {
       update(el, binding) {
         /* eslint-disable no-param-reassign */
         el.querySelector('canvas.heatmap-canvas').style.display = binding.value ? 'inherit' : 'none';
+
+        if (options.webgazer) {
+          /* eslint-disable no-undef */
+          webgazer.showPredictionPoints(binding.value);
+        }
       },
     });
   },
