@@ -1,6 +1,9 @@
 import h337 from 'heatmap.js';
 import { Observable, Subject } from 'rxjs';
 
+let loaded = false;
+window.addEventListener('load', () => { loaded = true; });
+
 export default {
   install(Vue, options = {}) {
     let heatmap;
@@ -83,33 +86,32 @@ export default {
       },
     });
 
-    Vue.directive('heatmap', {
-      inserted: async (el, binding) => {
-        heatmap = h337.create({
-          maxOpacity: 0.6,
-          radius: 50,
-          blur: 0.90,
-          backgroundColor: 'rgba(0, 0, 58, 0)',
-          container: el,
-        });
+    const loadHeatmap = async (el, binding) => {
+      heatmap = h337.create({
+        maxOpacity: 0.6,
+        radius: 50,
+        blur: 0.90,
+        backgroundColor: 'rgba(0, 0, 58, 0)',
+        container: el,
+      });
 
-        if (options.heatmapPreload) {
-          heatmap.addData(await Promise.resolve(options.heatmapPreload));
-        }
+      if (options.heatmapPreload) {
+        heatmap.addData(await Promise.resolve(options.heatmapPreload));
+      }
 
-        const move = Observable.fromEvent(el, 'mousemove');
-        const touch = Observable.fromEvent(el, 'touchmove');
-        const click = Observable.fromEvent(el, 'click');
+      const move = Observable.fromEvent(el, 'mousemove');
+      const touch = Observable.fromEvent(el, 'touchmove');
+      const click = Observable.fromEvent(el, 'click');
 
-        const streams = Observable.merge(
-          move.map(e => addValue(e, 5)),
-          touch.map(e => addValue(e, 5)),
-          click.map(e => addValue(e, 10)),
-        );
+      const streams = Observable.merge(
+        move.map(e => addValue(e, 5)),
+        touch.map(e => addValue(e, 5)),
+        click.map(e => addValue(e, 10)),
+      );
 
-        const pausable = pauser.switchMap(paused => (paused ? Observable.never : streams));
+      const pausable = pauser.switchMap(paused => (paused ? Observable.never : streams));
 
-        pausable.debounceTime(10)
+      pausable.debounceTime(10)
           .map(e => ({
             x: e.layerX,
             y: e.layerY,
@@ -117,17 +119,28 @@ export default {
           }))
           .subscribe(e => heatmap.addData(e));
 
-        if (options.afterAdd) {
-          pausable.subscribe(options.afterAdd);
-        }
+      if (options.afterAdd) {
+        pausable.subscribe(options.afterAdd);
+      }
 
-        if (options.stream) {
-          pausable.subscribe(e => options.stream.next(e));
-        }
+      if (options.stream) {
+        pausable.subscribe(e => options.stream.next(e));
+      }
 
-        /* eslint-disable no-param-reassign */
-        el.querySelector('canvas.heatmap-canvas').style.display = binding.value ? 'inherit' : 'none';
-        el.querySelector('canvas.heatmap-canvas').style.pointerEvents = 'none';
+      /* eslint-disable no-param-reassign */
+      el.querySelector('canvas.heatmap-canvas').style.display = binding.value ? 'inherit' : 'none';
+      el.querySelector('canvas.heatmap-canvas').style.pointerEvents = 'none';
+    };
+
+    Vue.directive('heatmap', {
+      inserted: async (el, binding) => {
+        window.addEventListener('load', () => {
+          loadHeatmap(el, binding);
+        });
+
+        if (loaded) {
+          loadHeatmap(el, binding);
+        }
       },
 
       update(el, binding) {

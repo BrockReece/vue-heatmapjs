@@ -49,7 +49,4 @@ export default {
   margin-top: 60px;
   min-height: 900px;
 }
-img {
-  min-height: 206px;
-}
 </style>
