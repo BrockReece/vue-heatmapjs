@@ -91,6 +91,26 @@ Vue.use(heatmap, {
 })
 ```
 
+### Pause collection
+You can pass an RXJS Subject through with the plugin options that will allow you to toggle whether your directives collect data or not
+
+```js
+//main.js
+export const pauser = new Subject();
+
+Vue.config.productionTip = false;
+Vue.use(Vueheatmap, {
+  pauser,
+});
+```
+
+```js
+// Pause data collection
+pauser.next(true);
+// Resume data collection
+pauser.next(false);
+```
+
 ### Preload heatmap
 Once you have captured heatmap data and persisted the data somewhere you will probably need a way of loading this data back in to your heatmap.
 
