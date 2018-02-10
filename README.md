@@ -27,6 +27,7 @@ import heatmap from 'vue-heatmapjs'
 Vue.use(heatmap)
 
 ```
+### v-heatmap
 And then you can add the `v-heatmap` directive to the dom elements you want to track.
 
 ```html
@@ -36,13 +37,23 @@ And then you can add the `v-heatmap` directive to the dom elements you want to t
 </div>
 ```
 
+### v-scrollmap
+You can use the `v-scrollmap` directive to collect scroll position data from your application
+
+```html
+<!-- App.vue -->
+<div v-scrollmap>
+  ...
+</div>
+```
+
 ### Toggle heatmap
-You can toggle the heatmap on and off by passing an expression into the directive, the example below will produce something similar to the image at the top of these docs
+You can toggle the heatmaps on and off by passing an expression into the directive, the example below will produce something similar to the image at the top of these docs
 
 ```html
 <template>
   ...
-  <div v-heatmap="show"></div>
+  <div v-heatmap="show" v-scrollmap="show"></div>
   <button @click="show = !show">Toggle Heatmap</button>
   ...
 </template>
@@ -61,7 +72,7 @@ You can toggle the heatmap on and off by passing an expression into the directiv
 ### Listen for events
 **Streams**
 
-You can pass in an Observable into the plugin options and subscribe to events captured for the heatmap.
+You can pass in an Observable into the plugin options and subscribe to events captured for the heatmaps.
 
 ```js
 // main.js
