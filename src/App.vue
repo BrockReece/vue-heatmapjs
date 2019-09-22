@@ -36,6 +36,12 @@ export default {
       pauser.next(this.paused);
     },
   },
+
+  async mounted() {
+    window.addEventListener('load', () => {
+      pauser.next(false);
+    });
+  },
 };
 </script>
 
