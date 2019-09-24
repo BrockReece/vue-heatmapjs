@@ -6,7 +6,7 @@
 
 > A vue directive for collecting and displaying user activity on a component
 
-## [Demo](https://brockreece.github.io/vue-heatmapjs/)
+## [Demo](https://vue-heatmapjs.netlify.com)
 ## Install
 You can use NPM or Yarn to add this plugin to your project
 ```bash
