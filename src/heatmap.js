@@ -6,8 +6,6 @@ window.addEventListener('load', () => { loaded = true; });
 
 export default {
   install(Vue, options = {}) {
-    let heatmap;
-
     const addValue = (e, value) => {
       e.value = value;
       return e;
@@ -87,7 +85,7 @@ export default {
     });
 
     const loadHeatmap = async (el, binding) => {
-      heatmap = h337.create({
+      const heatmap = h337.create({
         maxOpacity: 0.6,
         radius: 50,
         blur: 0.90,
